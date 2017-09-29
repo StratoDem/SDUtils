@@ -15,9 +15,11 @@ __all__ = [
 
 
 class SDConfigClass:
-    def __init__(self, cpu_count: int=8):
+    def __init__(self, cpu_count: int=8, npartitions: int=8):
         self._cpu_count = cpu_count
         self.cpu_count = cpu_count
+        self._npartitions = npartitions
+        self.npartitions = npartitions
 
     @property
     def cpu_count(self) -> int:
@@ -28,6 +30,16 @@ class SDConfigClass:
         assert isinstance(cpu_count, int) and cpu_count > 0
 
         self._cpu_count = cpu_count
+
+    @property
+    def npartitions(self) -> int:
+        return self._npartitions
+
+    @npartitions.setter
+    def npartitions(self, npartitions: int) -> None:
+        assert isinstance(npartitions, int) and npartitions > 0
+
+        self._npartitions = npartitions
 
 
 SDConfig = SDConfigClass()
