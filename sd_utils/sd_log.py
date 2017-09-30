@@ -19,7 +19,7 @@ from typing import Callable, Any, Optional, List
 from slackclient import SlackClient
 
 
-__all__ = ['SDLog', 'log', 'log_func', 'log_gen', 'cache']
+__all__ = ['SDLog', 'log', 'log_func', 'log_gen']
 
 
 class SDLog:
