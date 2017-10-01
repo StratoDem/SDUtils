@@ -16,3 +16,7 @@ shapely==1.6.1
 
 # Parallel
 joblib==0.11
+
+# Misc
+toolz==0.8.2
+cloudpickle==0.4.0
