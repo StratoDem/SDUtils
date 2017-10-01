@@ -31,5 +31,7 @@ setup(
         'geopandas',
         'simpledbf',
         'pyarrow',
+        'toolz',
+        'cloudpickle',
     ],
 )
