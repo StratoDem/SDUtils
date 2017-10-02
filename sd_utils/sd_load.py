@@ -56,7 +56,7 @@ T_CB = Callable[[T_DF, str], T_DF]
 # ///// Read DF - Normal /////
 @sd_log.log_func
 def read_df_csv(csv_file_path: str, *, callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
-    """Standard csv loading function. Can be used for almost all csv files (10GB+)"""
+    """Standard csv loading function. Can be used for almost all csv files"""
     assert isinstance(csv_file_path, str)
     assert callback is None or callable(callback)
 
