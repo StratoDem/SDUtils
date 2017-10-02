@@ -18,6 +18,8 @@ from typing import Callable, Any, Optional, List
 
 from slackclient import SlackClient
 
+from sd_utils.sd_config import SDConfig
+
 
 __all__ = ['SDLog', 'log', 'log_func', 'log_gen']
 
@@ -31,25 +33,17 @@ class SDLog:
     break_char = '|'
 
     def __init__(self, message: str='', timer: Optional[bool]=None, slack: bool=False,
-                 block: bool=False,
-                 slack_api_token: Optional[str]=None, slack_channel: Optional[str]=None,
-                 slack_personal_prefix: Optional[str]=None) -> None:
+                 block: bool=False) -> None:
         timer = self.set_timer if timer is None else timer
         assert isinstance(message, str)
         assert isinstance(timer, bool)
         assert isinstance(slack, bool)
         assert isinstance(block, bool)
-        assert slack_api_token is None or isinstance(slack_api_token, str)
-        assert slack_channel is None or isinstance(slack_channel, str)
-        assert slack_personal_prefix is None or isinstance(slack_personal_prefix, str)
 
         self.main_msg = message
         self.timer = timer
         self.slack = slack
         self.block = block
-        self.slack_api_token = slack_api_token
-        self.slack_channel = slack_channel
-        self.slack_personal_prefix = slack_personal_prefix
 
         self.start_time = None
 
@@ -73,8 +67,8 @@ class SDLog:
             print(self.context_buffer_str(), 'End  : ', self.main_msg, sep='')
 
         if self.slack:
-            if self.slack_api_token is not None and len(self.slack_api_token) > 0:
-                slack_client = SlackClient(self.slack_api_token)
+            if SDConfig.slack_api_token is not None and len(SDConfig.slack_api_token) > 0:
+                slack_client = SlackClient(SDConfig.slack_api_token)
 
                 # if isinstance(exc_type, KeyboardInterrupt):
                 #     return
@@ -97,8 +91,8 @@ class SDLog:
 
                 slack_client.api_call(
                     'chat.postMessage',
-                    channel='#{channel}'.format(channel=self.slack_channel),
-                    text='{prefix} {msg}'.format(prefix=self.slack_personal_prefix, msg=msg),
+                    channel='#{channel}'.format(channel=SDConfig.slack_channel),
+                    text='{prefix} {msg}'.format(prefix=SDConfig.slack_personal_prefix, msg=msg),
                     as_user=True)
 
     def log(self, *args, show_time: Optional[bool]=None) -> None:
