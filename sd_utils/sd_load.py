@@ -180,7 +180,8 @@ def read_ddf_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
     assert columns is None or isinstance(columns, (list, tuple))
     assert columns is None or all(isinstance(c, str) for c in columns)
 
-    return dask.dataframe.read_parquet(path=file_path, columns=columns, **dd_kwargs)
+    return dask.dataframe.read_parquet(path=file_path, columns=columns, engine='arrow',
+                                       **dd_kwargs)
 
 
 # ///// Read DF - Multi ///// #
