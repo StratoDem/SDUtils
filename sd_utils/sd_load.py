@@ -361,6 +361,7 @@ def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
 def write_ddf_parquet(ddf: T_DDF, file_path: str, **dd_kwargs) -> None:
     assert isinstance(file_path, str)
     assert all(isinstance(c, str) for c in ddf.columns)
+    assert isinstance(ddf, dask.dataframe.DataFrame)
 
     ddf.to_parquet(path=file_path, **dd_kwargs)
 
