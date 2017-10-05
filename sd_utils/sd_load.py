@@ -32,13 +32,14 @@ from sd_utils.sd_config import SDConfig
 
 __all__ = [
     'read_df_csv', 'read_df_json', 'read_df_fwf', 'read_df_hdf', 'read_df_stata', 'read_df_dbf',
-    'read_df_geopandas', 'read_df_excel', 'read_df_parquet',
+    'read_df_geopandas', 'read_df_excel', 'read_df_parquet', 'read_ddf_parquet',
 
     'multi_read_df_csv', 'multi_read_df_fwf', 'multi_read_df_geopandas', 'multi_read_df_excel',
     'multi_read_df_stata',
     'multi_joblib_read_df_csv',
 
     'write_df_csv', 'write_df_csv_stringio', 'write_df_hdf', 'write_df_parquet',
+    'write_ddf_parquet',
 
     'read_xds_netcdf',
     'write_xds_netcdf',
