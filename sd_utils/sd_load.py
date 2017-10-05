@@ -17,6 +17,7 @@ import os
 from io import StringIO
 from typing import Callable, Optional, List, Iterable
 
+import dask.dataframe
 import joblib
 import geopandas
 import pandas
@@ -158,16 +159,27 @@ def read_df_excel(file_path, *,
 def read_df_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
                     n_threads: int=SDConfig.cpu_count, **pyarrow_kwargs) -> T_DF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
+    assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
     assert columns is None or isinstance(columns, (list, tuple))
     assert columns is None or all(isinstance(c, str) for c in columns)
     assert isinstance(n_threads, int) and n_threads > 0
-    assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
 
     df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,
                                     **pyarrow_kwargs) \
         .to_pandas(nthreads=n_threads)
 
     return df
+
+
+@sd_log.log_func
+def read_ddf_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
+                     **dd_kwargs) -> T_DDF:
+    assert isinstance(file_path, str), '{} does not exist'.format(file_path)
+    assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
+    assert columns is None or isinstance(columns, (list, tuple))
+    assert columns is None or all(isinstance(c, str) for c in columns)
+
+    return dask.dataframe.read_parquet(path=file_path, columns=columns, **dd_kwargs)
 
 
 # ///// Read DF - Multi ///// #
@@ -343,6 +355,14 @@ def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
     kwargs = {**dict(index=False), **pyarrow_kwargs}
     pyarrow.parquet.write_table(
         df_arrow, file_path, chunk_size=chunk_size, version=version, **kwargs)
+
+
+@sd_log.log_func
+def write_ddf_parquet(ddf: T_DDF, file_path: str, **dd_kwargs) -> None:
+    assert isinstance(file_path, str)
+    assert all(isinstance(c, str) for c in ddf.columns)
+
+    ddf.to_parquet(path=file_path, **dd_kwargs)
 
 
 # ///// xarray - read ///// #
