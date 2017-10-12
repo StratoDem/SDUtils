@@ -1,22 +1,22 @@
 # Slack logging
-slackclient==1.0.9
+slackclient
 
 # Data
-numpy==1.13.3
-pandas==0.20.3
-dask==0.15.3
-pyarrow==0.7.1
-simpledbf==0.2.6
-xarray==0.9.6
+numpy
+pandas
+dask
+pyarrow
+simpledbf
+xarray
 
 # Geographic
-geopandas==0.3.0
-Fiona==1.7.9
-shapely==1.6.1
+geopandas
+Fiona
+shapely
 
 # Parallel
-joblib==0.11
+joblib
 
 # Misc
-toolz==0.8.2
-cloudpickle==0.4.0
+toolz
+cloudpickle
