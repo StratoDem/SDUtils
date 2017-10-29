@@ -21,8 +21,6 @@ import dask.dataframe
 import joblib
 import geopandas
 import pandas
-import pyarrow
-import pyarrow.parquet
 import simpledbf
 import xarray
 
