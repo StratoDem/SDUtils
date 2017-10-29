@@ -21,6 +21,8 @@ import dask.dataframe
 import joblib
 import geopandas
 import pandas
+import pyarrow
+import pyarrow.parquet
 import simpledbf
 import xarray
 
@@ -163,12 +165,12 @@ def read_df_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
     assert columns is None or all(isinstance(c, str) for c in columns)
     assert isinstance(n_threads, int) and n_threads > 0
 
-    df = pandas.read_parquet(file_path, engine='pyarrow', nthreads=n_threads, columns=columns,
-                             **pyarrow_kwargs)
+    # df = pandas.read_parquet(file_path, engine='pyarrow', nthreads=n_threads, columns=columns,
+    #                          **pyarrow_kwargs)
 
-    # df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,
-    #                                 **pyarrow_kwargs) \
-    #     .to_pandas(nthreads=n_threads)
+    df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,
+                                    **pyarrow_kwargs) \
+        .to_pandas(nthreads=n_threads)
 
     return df
 
@@ -354,12 +356,12 @@ def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
     assert all(isinstance(c, str) for c in df.columns)
 
     kwargs = {**dict(index=False), **pyarrow_kwargs}
-    df.to_parquet(file_path, engine='pyarrow', chunk_size=chunk_size, version=version, **kwargs)
+    # df.to_parquet(file_path, engine='pyarrow', chunk_size=chunk_size, version=version, **kwargs)
 
     # noinspection PyArgumentList
-    # df_arrow = pyarrow.Table.from_pandas(df)
-    # pyarrow.parquet.write_table(
-    #     df_arrow, file_path, chunk_size=chunk_size, version=version, **kwargs)
+    df_arrow = pyarrow.Table.from_pandas(df)
+    pyarrow.parquet.write_table(
+        df_arrow, file_path, chunk_size=chunk_size, version=version, **kwargs)
 
 
 @sd_log.log_func
