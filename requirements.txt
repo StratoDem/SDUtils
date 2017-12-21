@@ -5,7 +5,7 @@ slackclient
 numpy
 pandas>=0.21.1
 dask
-pyarrow
+pyarrow>=0.8.0
 simpledbf
 xarray
 
