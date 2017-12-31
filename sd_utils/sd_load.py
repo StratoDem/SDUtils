@@ -14,6 +14,7 @@ StratoDem Analytics, LLC
 import functools
 import multiprocessing
 import os
+import warnings
 from io import StringIO
 from typing import Callable, Optional, List, Iterable
 
@@ -21,8 +22,6 @@ import dask.dataframe
 import joblib
 import geopandas
 import pandas
-import pyarrow
-import pyarrow.parquet
 import simpledbf
 import xarray
 
@@ -350,13 +349,20 @@ def write_df_hdf(df: T_DF, hdf_file: str, hdf_key: str, *,
 
 @sd_log.log_func
 def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
-                     version: str='2.0', **pyarrow_kwargs) -> None:
+                     version: str='2.0', index: bool=True, **pyarrow_kwargs) -> None:
     assert isinstance(file_path, str)
     assert isinstance(chunk_size, int) and chunk_size > 0
     assert all(isinstance(c, str) for c in df.columns)
 
-    kwargs = {**dict(index=False), **pyarrow_kwargs}
-    df.to_parquet(file_path, engine='pyarrow', chunk_size=chunk_size, version=version, **kwargs)
+    if not index:
+        df = df.reset_index(drop=True)
+
+    df.to_parquet(
+        file_path,
+        engine='pyarrow',
+        chunk_size=chunk_size,
+        version=version,
+        **pyarrow_kwargs)
 
     # noinspection PyArgumentList
     # df_arrow = pyarrow.Table.from_pandas(df)

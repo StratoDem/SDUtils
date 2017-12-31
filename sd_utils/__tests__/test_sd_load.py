@@ -19,7 +19,7 @@ import sd_utils.sd_load as sdl
 class TestSDLoad(BaseTestCase):
     def test_parquet_write_load(self):
         # Full write
-        sdl.write_df_parquet(self._df, self._temporary_parquet_file_path)
+        sdl.write_df_parquet(self._df, self._temporary_parquet_file_path, index=True)
 
         df = sdl.read_df_parquet(self._temporary_parquet_file_path)
         self.assertTrue(a == b for a, b in zip(df.columns, self._df.columns))
