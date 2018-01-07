@@ -29,7 +29,7 @@ class SDLog:
     # /// #
     set_timer = True
     # /// #
-    special_char = '·'
+    special_char = '-'
     break_char = '|'
 
     def __init__(self, message: str='', timer: Optional[bool]=None, slack: bool=False,
