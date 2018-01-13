@@ -65,9 +65,12 @@ class SDLog:
         self.start_time = None
 
     def __enter__(self) -> 'SDLog':
-        print(self._context_buffer_str(), 'Start: ', self.main_msg, sep='')
+        self.log_message('{context_buffer}Start : {main_msg}'.format(
+            context_buffer=self._context_buffer_str(),
+            main_msg=self.main_msg))
         if self.slack:
-            print(self._context_buffer_str(), '[ Slack ]', sep='')
+            self.log_message('{context_buffer}[ Slack ]'.format(
+                context_buffer=self._context_buffer_str()))
 
         self.contexts.append(self)
         self.start_time = time.time()
@@ -76,16 +79,25 @@ class SDLog:
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         self.contexts.pop()
+        buffer_str = self._context_buffer_str()
 
         if self.timer:
-            buffer_str = self._context_buffer_str()
-            print(buffer_str, 'End  : ', self.main_msg,
-                  ' ', self.time_diff_str, sep='')
+            self.log_message('{context_buffer}End : {main_msg} {time_diff}'.format(
+                context_buffer=buffer_str,
+                main_msg=self.main_msg,
+                time_diff=self.time_diff_str))
+
             if self.max_expected_time is not None and self.time_diff > self.max_expected_time:
-                print(buffer_str, 'SLOW FUNCTION : ', self.main_msg, ' took longer than ',
-                      self.max_expected_time, 's!', sep='')
+                self.log_message(
+                    '{context_buffer}SLOW FUNCTION : {main_msg} took longer '
+                    'than {max_expected_time}s!'.format(
+                        context_buffer=buffer_str,
+                        main_msg=self.main_msg,
+                        max_expected_time=self.max_expected_time))
         else:
-            print(self._context_buffer_str(), 'End  : ', self.main_msg, sep='')
+            self.log_message('{context_buffer}End : {main_msg}'.format(
+                context_buffer=buffer_str,
+                main_msg=self.main_msg))
 
         if self.slack:
             if SDConfig.slack_api_token is not None and len(SDConfig.slack_api_token) > 0:
@@ -121,18 +133,70 @@ class SDLog:
         assert isinstance(show_time, bool)
 
         msg = self._format_msg_from_args(*args)
+        buffer_str = self._context_buffer_str()
 
         if show_time:
-            print(self._context_buffer_str(), '[ ', msg, ' ] ', self.time_diff_str, sep='')
+            self.log_message('{context_buffer}[ {msg} ] {time_diff}'.format(
+                context_buffer=buffer_str,
+                msg=msg,
+                time_diff=self.time_diff_str))
         else:
-            print(self._context_buffer_str(), '[ ', msg, ' ]', sep='')
+            self.log_message('{context_buffer}[ {msg} ]'.format(
+                context_buffer=buffer_str,
+                msg=msg))
 
     @classmethod
     def quick_log(cls, *args) -> None:
         msg = cls._format_msg_from_args(*args)
         now = datetime.datetime.now()
         end_str = ' ] [{:2d}:{:2d}:{:2d}]'.format(now.hour, now.minute, now.second)
-        print(cls._context_buffer_str(), '[ ', msg, end_str, sep='')
+        cls.log_message('{context_buffer}[ {msg}{end_str}'.format(
+            context_buffer=cls._context_buffer_str(),
+            msg=msg,
+            end_str=end_str))
+
+    @classmethod
+    def log_message(cls, message: str, **kwargs) -> None:
+        """
+        Logging method that can be overridden to provide non-print-based logging (e.g. to a db)
+
+        Parameters
+        ----------
+        message: str
+            Message to log
+        kwargs
+            Additional arguments to allow for flexible inheritance/extension
+
+        Returns
+        -------
+        """
+        assert isinstance(message, str)
+
+        print(message)
+
+    @classmethod
+    def log_func(cls, func: Optional[Callable]=None,
+                 max_expected_time: Optional[Union[int, float]]=None) -> Callable[[Any], Any]:
+        # If max_expected_time was passed in, then func will be none and we have to return
+        # log_func as a partial function with max_expected_time already filled in, to be used as
+        # the decorator again
+        if func is None:
+            return functools.partial(log_func, max_expected_time=max_expected_time)
+
+        assert callable(func)
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs) -> Callable[[Any], Any]:
+            if 'sdlog' in kwargs:
+                sdlog = kwargs.pop('sdlog')
+                assert isinstance(sdlog, bool)
+
+                if not sdlog:
+                    return func(*args, **kwargs)
+
+            with cls(func.__qualname__, max_expected_time=max_expected_time):
+                return func(*args, **kwargs)
+        return wrapper
 
     # /// Internal only /// #
     @property
@@ -208,3 +272,18 @@ if __name__ == '__main__':
     test_func()
     test_func2()
     test_func3()
+
+    class MyTestLogger(SDLog):
+        @classmethod
+        def log_message(cls, message: str, **kwargs):
+            print('SPECIAL LOGGER', message)
+
+
+    with MyTestLogger('Testing message') as sdl:
+        sdl.log('test')
+
+    @MyTestLogger.log_func
+    def test_func4():
+        MyTestLogger.quick_log('I am in 4')
+
+    test_func4()
