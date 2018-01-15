@@ -181,7 +181,7 @@ class SDLog:
         # log_func as a partial function with max_expected_time already filled in, to be used as
         # the decorator again
         if func is None:
-            return functools.partial(log_func, max_expected_time=max_expected_time)
+            return functools.partial(cls.log_func, max_expected_time=max_expected_time)
 
         assert callable(func)
 
@@ -228,6 +228,22 @@ def log(*args) -> None:
 
 def log_func(func: Optional[Callable]=None,
              max_expected_time: Optional[Union[int, float]]=None) -> Callable[[Any], Any]:
+    """
+    Decorator which optionally takes max_expected_time, a number of seconds that a function may take
+    to execute before a SLOW FUNCTION message is logged
+
+    Parameters
+    ----------
+    func: callable
+        Function to decorate
+    max_expected_time: int or float
+        Number of seconds a function may take to execute before a SLOW FUNCTION message is logged
+
+    Returns
+    -------
+    callable
+        Wrapped function
+    """
     # If max_expected_time was passed in, then func will be none and we have to return
     # log_func as a partial function with max_expected_time already filled in, to be used as
     # the decorator again
@@ -282,8 +298,14 @@ if __name__ == '__main__':
     with MyTestLogger('Testing message') as sdl:
         sdl.log('test')
 
-    @MyTestLogger.log_func
+    @MyTestLogger.log_func(max_expected_time=1.5)
     def test_func4():
         MyTestLogger.quick_log('I am in 4')
 
+    @MyTestLogger.log_func(max_expected_time=1.5)
+    def test_func5():
+        time.sleep(2)
+        MyTestLogger.quick_log('I am in 5')
+
     test_func4()
+    test_func5()
