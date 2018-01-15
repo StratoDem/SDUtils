@@ -9,8 +9,6 @@ Notes :
 December 14, 2017
 """
 
-import unittest
-
 from .base_test import BaseTestCase
 
 import sd_utils.sd_load as sdl
