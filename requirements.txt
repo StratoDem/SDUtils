@@ -2,9 +2,9 @@
 slackclient
 
 # Data
-numpy
+numpy>=1.14.0
 pandas>=0.22
-dask
+dask[complete]>=0.16.1
 pyarrow>=0.8.0
 simpledbf
 xarray
