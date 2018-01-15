@@ -1,3 +1,8 @@
+[1.3.1] 2018-01-15
+### Changed
+- Updated `pandas`, `dask`, and `numpy` versions.
+
+
 [1.3.0] 2018-01-15
 ### Added
 - `SDLog` now uses a class `log_message` method to log -- this now
