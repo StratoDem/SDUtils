@@ -1,4 +1,4 @@
-[1.3.1] 2018-01-15
+[1.4.0] 2018-01-15
 ### Changed
 - `SDLog` will now also log error traceback to Slack
 (before it was only the type and the value).
