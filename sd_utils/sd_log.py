@@ -108,12 +108,14 @@ class SDLog:
 
                 if exc_type is not None:
                     msg = '*I AM SORRY I BROKE*. `{msg}`, which started at {time} ' \
-                          'had this exception:\n```\n{exception} {exception_value}\n```' \
+                          'had this exception:\n```\n' \
+                          '{exception} {exception_value}\n{exception_traceback}\n```' \
                         .format(msg=self.main_msg,
                                 time=time.strftime('%m-%d %H:%M:%S',
                                                    time.localtime(self.start_time)),
                                 exception=exc_type,
-                                exception_value=exc_val)
+                                exception_value=exc_val,
+                                exception_traceback=exc_tb)
                 else:
                     msg = '*FINISHED* `{msg}`, which started at {time}. ' \
                           'DID I DO GOOD?? :tada:' \
