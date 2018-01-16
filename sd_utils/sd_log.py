@@ -14,6 +14,7 @@ StratoDem Analytics, LLC
 import datetime
 import functools
 import time
+import traceback
 from typing import Callable, Any, Optional, List, Union
 
 from slackclient import SlackClient
@@ -109,13 +110,12 @@ class SDLog:
                 if exc_type is not None:
                     msg = '*I AM SORRY I BROKE*. `{msg}`, which started at {time} ' \
                           'had this exception:\n```\n' \
-                          '{exception} {exception_value}\n{exception_traceback}\n```' \
+                          '{exception}\n```' \
                         .format(msg=self.main_msg,
-                                time=time.strftime('%m-%d %H:%M:%S',
-                                                   time.localtime(self.start_time)),
-                                exception=exc_type,
-                                exception_value=exc_val,
-                                exception_traceback=exc_tb)
+                                time=time.strftime(
+                                    '%m-%d %H:%M:%S', time.localtime(self.start_time)),
+                                exception=''.join(traceback.format_exception(
+                                    type__, value__, traceback__, limit=10)))
                 else:
                     msg = '*FINISHED* `{msg}`, which started at {time}. ' \
                           'DID I DO GOOD?? :tada:' \
@@ -311,3 +311,11 @@ if __name__ == '__main__':
 
     test_func4()
     test_func5()
+
+    import sys
+    try:
+        raise ValueError
+    except ValueError as e:
+        type__, value__, traceback__ = sys.exc_info()
+
+    print(traceback.format_exception(type__, value__, traceback__))

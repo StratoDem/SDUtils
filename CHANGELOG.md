@@ -1,3 +1,7 @@
+[1.4.1] 2018-01-15
+### Changed
+- `SDLog` logs traceback up to 10 levels deep as text to Slack.
+
 [1.4.0] 2018-01-15
 ### Changed
 - `SDLog` will now also log error traceback to Slack
