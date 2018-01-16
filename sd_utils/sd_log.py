@@ -115,7 +115,7 @@ class SDLog:
                                 time=time.strftime(
                                     '%m-%d %H:%M:%S', time.localtime(self.start_time)),
                                 exception=''.join(traceback.format_exception(
-                                    type__, value__, traceback__, limit=10)))
+                                    exc_type, exc_val, exc_tb, limit=10)))
                 else:
                     msg = '*FINISHED* `{msg}`, which started at {time}. ' \
                           'DID I DO GOOD?? :tada:' \
