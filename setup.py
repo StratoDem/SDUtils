@@ -13,7 +13,7 @@ from setuptools import setup
 
 setup(
     name='SDUtils',
-    version='1.4.1',
+    version='2.0.0',
     packages=['sd_utils'],
     license='(c) 2017- StratoDem Analytics. All rights reserved.',
     description='StratoDem utilities',
@@ -30,7 +30,7 @@ setup(
         'xarray>=0.10.0',
         'geopandas>=0.3.0',
         'simpledbf>=0.2.6',
-        'pyarrow>=0.8.0',
+        'pyarrow==0.11',
         'toolz',
         'cloudpickle',
     ],

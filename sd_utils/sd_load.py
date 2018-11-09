@@ -157,14 +157,14 @@ def read_df_excel(file_path, *,
 
 @sd_log.log_func
 def read_df_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
-                    n_threads: int=SDConfig.cpu_count, **pyarrow_kwargs) -> T_DF:
+                    use_threads: bool=True, **pyarrow_kwargs) -> T_DF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
     assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
     assert columns is None or isinstance(columns, (list, tuple))
     assert columns is None or all(isinstance(c, str) for c in columns)
-    assert isinstance(n_threads, int) and n_threads > 0
+    assert isinstance(use_threads, bool)
 
-    df = pandas.read_parquet(file_path, engine='pyarrow', nthreads=n_threads, columns=columns,
+    df = pandas.read_parquet(file_path, engine='pyarrow', use_threads=use_threads, columns=columns,
                              **pyarrow_kwargs)
 
     # df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,

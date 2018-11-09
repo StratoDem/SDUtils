@@ -1,3 +1,8 @@
+[2.0.0] 2018-11-10
+### Changed
+- Updates `pyarrow` requirement to `0.11`
+- Changes `nthreads` in `read_df_parquet` to `use_threads` to match https://arrow.apache.org/docs/python/generated/pyarrow.parquet.ParquetFile.html#pyarrow.parquet.ParquetFile.read
+
 [1.4.1] 2018-01-15
 ### Changed
 - `SDLog` logs traceback up to 10 levels deep as text to Slack.
