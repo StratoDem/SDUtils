@@ -1,3 +1,7 @@
+## [2.1.1] 2019-04-07
+### Changes
+- Updates requirements for `pandas`, `numpy`, `dask`, and `pyarrow`
+
 ## [2.1.0] 2019-01-18
 ### Changes
 - Updates requirements for pandas, numpy, scikit-learn, and pyarrow
