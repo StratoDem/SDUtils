@@ -13,7 +13,7 @@ from setuptools import setup
 
 setup(
     name='SDUtils',
-    version='2.1.0',
+    version='2.1.1',
     packages=['sd_utils'],
     license='(c) 2017- StratoDem Analytics. All rights reserved.',
     description='StratoDem utilities',
@@ -23,10 +23,10 @@ setup(
     url='https://github.com/StratoDem/SDUtils',
     install_requires=[
         'slackclient>=1.1.0',
-        'numpy>=1.16.0',
-        'pandas>=0.24',
+        'numpy==1.16.2',
+        'pandas==0.24.2',
         'joblib',
-        'dask>=1.1.0',
+        'dask==1.1.5',
         'xarray>=0.10.0',
         'geopandas>=0.3.0',
         'simpledbf>=0.2.6',
