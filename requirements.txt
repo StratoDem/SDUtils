@@ -3,7 +3,7 @@ slackclient
 
 # Data
 numpy==1.16.0
-pandas==0.24.0
+pandas==0.24.2
 dask[complete]==1.1.5
 pyarrow==0.13.0
 simpledbf
