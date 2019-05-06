@@ -17,10 +17,9 @@ import time
 import traceback
 from typing import Callable, Any, Optional, List, Union
 
-from slackclient import SlackClient
+from slack import WebClient
 
 from sd_utils.sd_config import SDConfig
-
 
 __all__ = ['SDLog', 'log', 'log_func', 'log_gen']
 
@@ -33,8 +32,9 @@ class SDLog:
     special_char = '-'
     break_char = '|'
 
-    def __init__(self, message: str='', timer: Optional[bool]=None, slack: bool=False,
-                 block: bool=False, max_expected_time: Optional[Union[int, float]]=None) -> None:
+    def __init__(self, message: str = '', timer: Optional[bool] = None, slack: bool = False,
+                 block: bool = False,
+                 max_expected_time: Optional[Union[int, float]] = None) -> None:
         """
         SDLog which logs context on entrance and exit
 
@@ -102,7 +102,7 @@ class SDLog:
 
         if self.slack:
             if SDConfig.slack_api_token is not None and len(SDConfig.slack_api_token) > 0:
-                slack_client = SlackClient(SDConfig.slack_api_token)
+                slack_client = WebClient(SDConfig.slack_api_token)
 
                 # if isinstance(exc_type, KeyboardInterrupt):
                 #     return
@@ -124,13 +124,12 @@ class SDLog:
                                                    time.localtime(self.start_time)),
                                 exception=exc_type)
 
-                slack_client.api_call(
-                    'chat.postMessage',
+                slack_client.chat_postMessage(
                     channel='#{channel}'.format(channel=SDConfig.slack_channel),
                     text='{prefix} {msg}'.format(prefix=SDConfig.slack_personal_prefix, msg=msg),
                     as_user=True)
 
-    def log(self, *args, show_time: Optional[bool]=None) -> None:
+    def log(self, *args, show_time: Optional[bool] = None) -> None:
         show_time = self.set_timer if show_time is None else show_time
         assert isinstance(show_time, bool)
 
@@ -177,8 +176,8 @@ class SDLog:
         print(message)
 
     @classmethod
-    def log_func(cls, func: Optional[Callable]=None,
-                 max_expected_time: Optional[Union[int, float]]=None) -> Callable[[Any], Any]:
+    def log_func(cls, func: Optional[Callable] = None,
+                 max_expected_time: Optional[Union[int, float]] = None) -> Callable[[Any], Any]:
         # If max_expected_time was passed in, then func will be none and we have to return
         # log_func as a partial function with max_expected_time already filled in, to be used as
         # the decorator again
@@ -198,6 +197,7 @@ class SDLog:
 
             with cls(func.__qualname__, max_expected_time=max_expected_time):
                 return func(*args, **kwargs)
+
         return wrapper
 
     # /// Internal only /// #
@@ -228,8 +228,8 @@ def log(*args) -> None:
     SDLog.quick_log(*args)
 
 
-def log_func(func: Optional[Callable]=None,
-             max_expected_time: Optional[Union[int, float]]=None) -> Callable[[Any], Any]:
+def log_func(func: Optional[Callable] = None,
+             max_expected_time: Optional[Union[int, float]] = None) -> Callable[[Any], Any]:
     """
     Decorator which optionally takes max_expected_time, a number of seconds that a function may take
     to execute before a SLOW FUNCTION message is logged
@@ -265,6 +265,7 @@ def log_func(func: Optional[Callable]=None,
 
         with SDLog(func.__qualname__, max_expected_time=max_expected_time):
             return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -279,17 +280,21 @@ if __name__ == '__main__':
     def test_func():
         time.sleep(2)
 
+
     @log_func(max_expected_time=2.3)
     def test_func2():
         time.sleep(1)
+
 
     @log_func
     def test_func3():
         time.sleep(2)
 
+
     test_func()
     test_func2()
     test_func3()
+
 
     class MyTestLogger(SDLog):
         @classmethod
@@ -300,19 +305,23 @@ if __name__ == '__main__':
     with MyTestLogger('Testing message') as sdl:
         sdl.log('test')
 
+
     @MyTestLogger.log_func(max_expected_time=1.5)
     def test_func4():
         MyTestLogger.quick_log('I am in 4')
+
 
     @MyTestLogger.log_func(max_expected_time=1.5)
     def test_func5():
         time.sleep(2)
         MyTestLogger.quick_log('I am in 5')
 
+
     test_func4()
     test_func5()
 
     import sys
+
     try:
         raise ValueError
     except ValueError as e:

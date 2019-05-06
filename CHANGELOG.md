@@ -1,3 +1,7 @@
+## [2.2.0] 2019-05-06
+### Changes
+- Updates `slackclient` dependency to `2.0.1` and handles migration of api to v2 (https://github.com/slackapi/python-slackclient/wiki/Migrating-to-2.x)
+
 ## [2.1.1] 2019-04-07
 ### Changes
 - Updates requirements for `pandas`, `numpy`, `dask`, and `pyarrow`
