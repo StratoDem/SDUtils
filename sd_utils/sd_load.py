@@ -156,15 +156,18 @@ def read_df_excel(file_path, *,
 
 
 @sd_log.log_func
-def read_df_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
-                    use_threads: bool=True, **pyarrow_kwargs) -> T_DF:
+def read_df_parquet(file_path: str,
+                    columns: Optional[Iterable[str]]=None,
+                    use_threads: bool = True,
+                    engine: str='pyarrow',
+                    **pyarrow_kwargs) -> T_DF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
     assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
     assert columns is None or isinstance(columns, (list, tuple))
     assert columns is None or all(isinstance(c, str) for c in columns)
     assert isinstance(use_threads, bool)
 
-    df = pandas.read_parquet(file_path, engine='pyarrow', use_threads=use_threads, columns=columns,
+    df = pandas.read_parquet(file_path, engine=engine, use_threads=use_threads, columns=columns,
                              **pyarrow_kwargs)
 
     # df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,
@@ -175,14 +178,16 @@ def read_df_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
 
 
 @sd_log.log_func
-def read_ddf_parquet(file_path: str, columns: Optional[Iterable[str]]=None,
+def read_ddf_parquet(file_path: str,
+                     columns: Optional[Iterable[str]] = None,
+                     engine: str='pyarrow',
                      **dd_kwargs) -> T_DDF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
     assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
     assert columns is None or isinstance(columns, (list, tuple))
     assert columns is None or all(isinstance(c, str) for c in columns)
 
-    return dask.dataframe.read_parquet(path=file_path, columns=columns, engine='arrow',
+    return dask.dataframe.read_parquet(path=file_path, columns=columns, engine=engine,
                                        **dd_kwargs)
 
 

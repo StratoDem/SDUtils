@@ -1,3 +1,7 @@
+## [2.3.0] 2019-05-06
+### Changes
+- `read_df_parquet` and `read_ddf_parquet` now take optional `engine` argument to allow to use `pyarrow` or `fastparquet` engines for reading parquet files.
+
 ## [2.2.0] 2019-05-06
 ### Changes
 - Updates `slackclient` dependency to `2.0.1` and handles migration of api to v2 (https://github.com/slackapi/python-slackclient/wiki/Migrating-to-2.x)
