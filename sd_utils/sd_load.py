@@ -28,7 +28,6 @@ import xarray
 from . import sd_log, sd_checks
 from sd_utils.sd_config import SDConfig
 
-
 __all__ = [
     'read_df_csv', 'read_df_json', 'read_df_fwf', 'read_df_hdf', 'read_df_stata', 'read_df_dbf',
     'read_df_geopandas', 'read_df_excel', 'read_df_parquet', 'read_ddf_parquet',
@@ -46,7 +45,6 @@ __all__ = [
     'file_size',
 ]
 
-
 T_DF = sd_checks.T_DF
 T_GDF = sd_checks.T_GDF
 T_DDF = sd_checks.T_DDF
@@ -56,7 +54,7 @@ T_CB = Callable[[T_DF, str], T_DF]
 
 # ///// Read DF - Normal /////
 @sd_log.log_func
-def read_df_csv(csv_file_path: str, *, callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+def read_df_csv(csv_file_path: str, *, callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     """Standard csv loading function. Can be used for almost all csv files"""
     assert isinstance(csv_file_path, str)
     assert callback is None or callable(callback)
@@ -91,8 +89,8 @@ def read_df_fwf(fwf_file_path: str, **pandas_kwargs) -> T_DF:
 
 
 @sd_log.log_func
-def read_df_hdf(hdf_file: str, hdf_key: str, *, columns: Optional[List[str]]=None,
-                where: Optional[str]=None) -> T_DF:
+def read_df_hdf(hdf_file: str, hdf_key: str, *, columns: Optional[List[str]] = None,
+                where: Optional[str] = None) -> T_DF:
     assert isinstance(hdf_file, str)
     assert os.path.isfile(hdf_file)
     assert isinstance(hdf_key, str)
@@ -125,7 +123,7 @@ def read_df_dbf(dbf_file: str, **simpledbf_kwargs) -> T_DF:
 
 
 @sd_log.log_func
-def read_df_geopandas(file_path, *, callback: Optional[T_CB]=None, **geopandas_kwargs) -> T_GDF:
+def read_df_geopandas(file_path, *, callback: Optional[T_CB] = None, **geopandas_kwargs) -> T_GDF:
     assert isinstance(file_path, str)
     sd_log.log(file_path)
 
@@ -139,7 +137,7 @@ def read_df_geopandas(file_path, *, callback: Optional[T_CB]=None, **geopandas_k
 
 @sd_log.log_func
 def read_df_excel(file_path, *,
-                  callback: Optional[T_CB]=None,
+                  callback: Optional[T_CB] = None,
                   **pandas_kwargs) -> T_DF:
     assert isinstance(file_path, str)
     assert callback is None or callable(callback)
@@ -157,9 +155,9 @@ def read_df_excel(file_path, *,
 
 @sd_log.log_func
 def read_df_parquet(file_path: str,
-                    columns: Optional[Iterable[str]]=None,
+                    columns: Optional[Iterable[str]] = None,
                     use_threads: bool = True,
-                    engine: str='pyarrow',
+                    engine: str = 'pyarrow',
                     **pyarrow_kwargs) -> T_DF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
     assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
@@ -167,8 +165,16 @@ def read_df_parquet(file_path: str,
     assert columns is None or all(isinstance(c, str) for c in columns)
     assert isinstance(use_threads, bool)
 
-    df = pandas.read_parquet(file_path, engine=engine, use_threads=use_threads, columns=columns,
-                             **pyarrow_kwargs)
+    extra_kwargs = {}
+    if engine == 'pyarrow':
+        extra_kwargs.update(pyarrow_kwargs)
+        extra_kwargs.update({'use_threads': use_threads})
+
+    df = pandas.read_parquet(
+        file_path,
+        engine=engine,
+        columns=columns,
+        **extra_kwargs)
 
     # df = pyarrow.parquet.read_table(file_path, nthreads=n_threads, columns=columns,
     #                                 **pyarrow_kwargs) \
@@ -180,7 +186,7 @@ def read_df_parquet(file_path: str,
 @sd_log.log_func
 def read_ddf_parquet(file_path: str,
                      columns: Optional[Iterable[str]] = None,
-                     engine: str='pyarrow',
+                     engine: str = 'pyarrow',
                      **dd_kwargs) -> T_DDF:
     assert isinstance(file_path, str), '{} does not exist'.format(file_path)
     assert os.path.exists(file_path), 'file does not exist at {}'.format(file_path)
@@ -193,7 +199,7 @@ def read_ddf_parquet(file_path: str,
 
 # ///// Read DF - Multi ///// #
 def _multi_read_df_generic(paths: List[str], read_func: Callable, *,
-                           pool_size: int=SDConfig.cpu_count, callback: Optional[T_CB]=None,
+                           pool_size: int = SDConfig.cpu_count, callback: Optional[T_CB] = None,
                            **pandas_kwargs) -> T_DF:
     assert isinstance(paths, (tuple, list))
     assert all(isinstance(p, str) for p in paths)
@@ -219,8 +225,8 @@ def _multi_read_df_generic(paths: List[str], read_func: Callable, *,
 
 def _multi_joblib_read_df_generic(paths: List[str], read_func: Callable,
                                   kwargs_dict_list: List[dict], *,
-                                  pool_size: int=SDConfig.cpu_count,
-                                  callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+                                  pool_size: int = SDConfig.cpu_count,
+                                  callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     assert isinstance(paths, (tuple, list))
     assert all(isinstance(p, str) for p in paths)
     assert callable(read_func)
@@ -242,30 +248,30 @@ def _multi_joblib_read_df_generic(paths: List[str], read_func: Callable,
 
 
 @sd_log.log_func
-def multi_read_df_csv(paths: List[str], *, pool_size: int=SDConfig.cpu_count,
-                      callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+def multi_read_df_csv(paths: List[str], *, pool_size: int = SDConfig.cpu_count,
+                      callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     return _multi_read_df_generic(paths, read_func=read_df_csv, pool_size=pool_size,
                                   callback=callback, **pandas_kwargs)
 
 
 @sd_log.log_func
 def multi_joblib_read_df_csv(paths: List[str], kwargs_dict_list: List[dict], *,
-                             pool_size: int=SDConfig.cpu_count,
-                             callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+                             pool_size: int = SDConfig.cpu_count,
+                             callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     return _multi_joblib_read_df_generic(
         paths, read_func=read_df_csv, kwargs_dict_list=kwargs_dict_list,
         pool_size=pool_size, callback=callback, **pandas_kwargs)
 
 
 @sd_log.log_func
-def multi_read_df_fwf(paths: List[str], *, pool_size: int=SDConfig.cpu_count,
-                      callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+def multi_read_df_fwf(paths: List[str], *, pool_size: int = SDConfig.cpu_count,
+                      callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     return _multi_read_df_generic(paths, read_func=read_df_fwf, pool_size=pool_size,
                                   callback=callback, **pandas_kwargs)
 
 
 @sd_log.log_func
-def multi_read_df_geopandas(paths: List[str], *, pool_size: int=SDConfig.cpu_count,
+def multi_read_df_geopandas(paths: List[str], *, pool_size: int = SDConfig.cpu_count,
                             callback: Optional[T_CB] = None, **geopandas_kwargs) -> T_GDF:
     df = _multi_read_df_generic(paths, read_func=read_df_geopandas, pool_size=pool_size,
                                 callback=callback, **geopandas_kwargs)
@@ -273,15 +279,15 @@ def multi_read_df_geopandas(paths: List[str], *, pool_size: int=SDConfig.cpu_cou
 
 
 @sd_log.log_func
-def multi_read_df_excel(paths: List[str], *, pool_size: int=SDConfig.cpu_count,
-                        callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+def multi_read_df_excel(paths: List[str], *, pool_size: int = SDConfig.cpu_count,
+                        callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     return _multi_read_df_generic(paths, read_func=read_df_excel, pool_size=pool_size,
                                   callback=callback, **pandas_kwargs)
 
 
 @sd_log.log_func
-def multi_read_df_stata(paths: List[str], *, pool_size: int=SDConfig.cpu_count,
-                        callback: Optional[T_CB]=None, **pandas_kwargs) -> T_DF:
+def multi_read_df_stata(paths: List[str], *, pool_size: int = SDConfig.cpu_count,
+                        callback: Optional[T_CB] = None, **pandas_kwargs) -> T_DF:
     return _multi_read_df_generic(paths, read_func=read_df_stata, pool_size=pool_size,
                                   callback=callback, **pandas_kwargs)
 
@@ -318,8 +324,8 @@ def write_df_csv_stringio(df: T_DF, **kwargs) -> StringIO:
 
 @sd_log.log_func
 def write_df_hdf(df: T_DF, hdf_file: str, hdf_key: str, *,
-                 append: bool=False, fast: bool=False, compress: bool=True,
-                 min_itemsize: Optional[int]=None) -> None:
+                 append: bool = False, fast: bool = False, compress: bool = True,
+                 min_itemsize: Optional[int] = None) -> None:
     """Write an hdf file for the current pandas.DataFrame"""
     assert isinstance(df, pandas.DataFrame)
     assert isinstance(hdf_file, str)
@@ -353,8 +359,9 @@ def write_df_hdf(df: T_DF, hdf_file: str, hdf_key: str, *,
 
 
 @sd_log.log_func
-def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
-                     version: str='2.0', index: bool=True, **pyarrow_kwargs) -> None:
+def write_df_parquet(df: T_DF, file_path: str, chunk_size: int = 50000,
+                     version: str = '2.0', index: bool = True, engine: str = 'pyarrow',
+                     **pyarrow_kwargs) -> None:
     assert isinstance(file_path, str)
     assert isinstance(chunk_size, int) and chunk_size > 0
     assert all(isinstance(c, str) for c in df.columns)
@@ -362,12 +369,14 @@ def write_df_parquet(df: T_DF, file_path: str, chunk_size: int=50000,
     if not index:
         df = df.reset_index(drop=True)
 
+    extra_kwargs = {}
+    if engine == 'pyarrow':
+        extra_kwargs.update({'chunk_size': chunk_size, 'version': version})
+
     df.to_parquet(
         file_path,
-        engine='pyarrow',
-        chunk_size=chunk_size,
-        version=version,
-        **pyarrow_kwargs)
+        engine=engine,
+        **extra_kwargs)
 
     # noinspection PyArgumentList
     # df_arrow = pyarrow.Table.from_pandas(df)

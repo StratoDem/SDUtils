@@ -1,4 +1,9 @@
-## [2.3.0] 2019-05-06
+## [2.3.1] 2019-05-18
+### Fixes
+- Fixes kwargs passed along to pyarrow/fastparquet engines in `read_df_parquet` and `read_ddf_parquet`
+- Updates `write_df_parquet` and `write_ddf_parquet` to handle `fastparquet` engine
+
+## [2.3.0] 2019-05-18
 ### Changes
 - `read_df_parquet` and `read_ddf_parquet` now take optional `engine` argument to allow to use `pyarrow` or `fastparquet` engines for reading parquet files.
 
