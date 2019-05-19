@@ -1,3 +1,7 @@
+## [2.3.2] 2019-05-18
+### Fixes
+- Locks `pyarrow` to `0.12.0` to avoid segfault as described in https://github.com/pytorch/pytorch/issues/13039#issuecomment-481443691
+
 ## [2.3.1] 2019-05-18
 ### Fixes
 - Fixes kwargs passed along to pyarrow/fastparquet engines in `read_df_parquet` and `read_ddf_parquet`
