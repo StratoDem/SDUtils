@@ -30,7 +30,7 @@ setup(
         'xarray>=0.10.0',
         'geopandas>=0.3.0',
         'simpledbf>=0.2.6',
-        'pyarrow==0.12.0',
+        'pyarrow==0.14.1',
         'toolz',
         'cloudpickle',
     ],
