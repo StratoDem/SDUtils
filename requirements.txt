@@ -2,7 +2,7 @@
 slackclient==2.0.1
 
 # Data
-numpy==1.16.2
+numpy==1.17.2
 pandas==0.24.2
 dask[complete]==1.2.2
 pyarrow==0.12.0
