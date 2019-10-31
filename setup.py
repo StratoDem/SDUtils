@@ -26,7 +26,7 @@ setup(
         'numpy==1.16.2',
         'pandas==0.24.2',
         'joblib',
-        'dask==1.2.2',
+        'dask==2.6.0',
         'xarray>=0.10.0',
         'geopandas>=0.3.0',
         'simpledbf>=0.2.6',
