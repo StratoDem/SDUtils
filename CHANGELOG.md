@@ -1,10 +1,10 @@
 ## [2.4.0] 2019-05-18
 ### Changes
 - Dependencies updates:
-    - `pyarrow` -> 0.15.1 (#172)[https://github.com/StratoDem/SDUtils/pull/172]
-    - `numpy` -> 1.17.4 (#173)[https://github.com/StratoDem/SDUtils/pull/173]
-    - `pandas` -> 0.25.3 (#171)[https://github.com/StratoDem/SDUtils/pull/171]
-    - `dask` -> 2.8.0 (#175)[https://github.com/StratoDem/SDUtils/pull/175]
+    - `pyarrow` -> 0.15.1 [#172](https://github.com/StratoDem/SDUtils/pull/172)
+    - `numpy` -> 1.17.4 [#173](https://github.com/StratoDem/SDUtils/pull/173)
+    - `pandas` -> 0.25.3 [#171](https://github.com/StratoDem/SDUtils/pull/171)
+    - `dask` -> 2.8.0 [#175](https://github.com/StratoDem/SDUtils/pull/175)
 
 ## [2.3.2] 2019-05-18
 ### Fixes
