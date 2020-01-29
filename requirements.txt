@@ -2,7 +2,7 @@
 slackclient==2.4.0
 
 # Data
-numpy==1.17.4
+numpy==1.18.1
 pandas==0.25.3
 dask[complete]==2.8.1
 python-snappy
