@@ -1,5 +1,5 @@
 # Slack logging
-slackclient==2.4.0
+slackclient==2.5.0
 
 # Data
 numpy==1.18.1
