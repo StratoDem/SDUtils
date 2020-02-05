@@ -4,7 +4,7 @@ slackclient==2.5.0
 # Data
 numpy==1.18.1
 pandas==1.0.0
-dask[complete]==2.8.1
+dask[complete]==2.10.1
 python-snappy
 pyarrow==0.15.1
 simpledbf
