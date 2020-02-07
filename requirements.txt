@@ -6,7 +6,7 @@ numpy==1.18.1
 pandas==1.0.1
 dask[complete]==2.10.1
 python-snappy
-pyarrow==0.15.1
+pyarrow==0.16.0
 simpledbf
 xarray
 fastparquet

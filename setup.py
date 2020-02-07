@@ -31,7 +31,7 @@ setup(
         'geopandas>=0.3.0',
         'simpledbf>=0.2.6',
         'python-snappy',
-        'pyarrow==0.15.1',
+        'pyarrow==0.16.0',
         'toolz',
         'cloudpickle',
         'fastparquet',
