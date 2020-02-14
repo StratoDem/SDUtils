@@ -13,7 +13,7 @@ from setuptools import setup
 
 setup(
     name='SDUtils',
-    version='2.4.0',
+    version='2.5.0',
     packages=['sd_utils'],
     license='(c) 2017- StratoDem Analytics. All rights reserved.',
     description='StratoDem utilities',
