@@ -23,7 +23,7 @@ setup(
     url='https://github.com/StratoDem/SDUtils',
     install_requires=[
         'slackclient==2.5.0',
-        'numpy==1.18.1',
+        'numpy==1.18.2',
         'pandas==1.0.2',
         'joblib',
         'dask==2.12.0',
