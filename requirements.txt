@@ -3,7 +3,7 @@ slackclient==2.5.0
 
 # Data
 numpy==1.18.2
-pandas==1.0.2
+pandas==1.0.3
 dask[complete]==2.12.0
 python-snappy
 pyarrow==0.16.0
