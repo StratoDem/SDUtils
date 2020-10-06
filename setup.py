@@ -24,7 +24,7 @@ setup(
     install_requires=[
         'slackclient==2.9.1',
         'numpy==1.19.2',
-        'pandas==1.1.2',
+        'pandas==1.1.3',
         'joblib',
         'dask==2.29.0',
         'xarray>=0.10.0',
