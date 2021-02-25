@@ -1,3 +1,8 @@
+## [2.6.3] 2021-02-25
+### Changes
+- Dependencies updates:
+    - `numpy` -> >= 1.19
+
 ## [2.6.2] 2021-02-25
 ### Changes
 - Dependencies updates:
