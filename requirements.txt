@@ -2,11 +2,11 @@
 slackclient==2.9.3
 
 # Data
-numpy==1.20.1
-pandas==1.2.2
+numpy>=1.20.1
+pandas>=1.2.2
 dask[complete]==2021.2.0
 python-snappy
-pyarrow==3.0.0
+pyarrow>=2.0.0
 simpledbf
 xarray
 fastparquet

@@ -1,3 +1,12 @@
+## [2.6.1] 2021-02-25
+### Changes
+- Dependencies updates:
+    - `slackclient` -> 2.9.3
+    - `numpy` -> >= 1.20.1
+    - `pandas` -> >=1.2.2
+    - `dask[complete]` -> 2021.2.0
+    - `pyarrow` -> >= 2.0.0
+
 ## [2.5.0] 2020-02-14
 ### Changes
 - Dependencies updates:
