@@ -1,4 +1,4 @@
-## [2.6.1] 2021-02-25
+## [2.6.2] 2021-02-25
 ### Changes
 - Dependencies updates:
     - `slackclient` -> 2.9.3
