@@ -22,7 +22,7 @@ setup(
     author_email='tech@stratodem.com',
     url='https://github.com/StratoDem/SDUtils',
     install_requires=[
-        'slackclient==2.9.3',
+        'slackclient==2.9.4',
         'numpy>=1.19',
         'pandas>=1.2.2',
         'joblib',
