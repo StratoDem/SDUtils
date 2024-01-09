@@ -1,3 +1,8 @@
+## [2.6.4] 2024-01-09
+### Fixes
+- Dependencies updates:
+    - `pandas` -> == 1.3.4
+  
 ## [2.6.3] 2021-02-25
 ### Changes
 - Dependencies updates:
