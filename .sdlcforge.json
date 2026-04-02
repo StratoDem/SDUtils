@@ -1,0 +1,52 @@
+{
+  "_comment": "SDLC Forge configuration file for SDUtils",
+  "schema_version": "1.0",
+  "projects": [
+    {
+      "type": "python",
+      "name": "SDUtils",
+      "path": "",
+      "runtime": {
+        "name": "python",
+        "version": "3.12"
+      },
+      "build_tool": {
+        "name": "venv",
+        "version": "3.12"
+      },
+      "dependency": {
+        "command": "python3.12 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+      },
+      "build": {
+        "command": ". .venv/bin/activate && python -m build"
+      },
+      "tests": [
+        {
+          "type": "unit",
+          "command": ". .venv/bin/activate && pip install pytest pytest-cov && pytest sd_utils/__tests__/ --cov=sd_utils --cov-report=xml:coverage-reports/coverage.xml --junitxml=test-reports/junit.xml -v"
+        }
+      ],
+      "artefacts": {
+        "source_code": [
+          "sd_utils/"
+        ],
+        "test_code": [
+          "sd_utils/__tests__/"
+        ],
+        "deliverable": [
+          "dist/*.whl",
+          "dist/*.tar.gz"
+        ],
+        "dependency_manifests": [
+          "requirements.txt"
+        ],
+        "tests_reports": [
+          "test-reports/junit.xml"
+        ],
+        "coverage_reports": [
+          "coverage-reports/coverage.xml"
+        ]
+      }
+    }
+  ]
+}
