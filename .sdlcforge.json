@@ -8,14 +8,14 @@
       "path": "",
       "runtime": {
         "name": "python",
-        "version": "3.12"
+        "version": "3.13"
       },
       "build_tool": {
         "name": "venv",
-        "version": "3.12"
+        "version": "3.13"
       },
       "dependency": {
-        "command": "python3.12 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+        "command": "python3.13 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
       },
       "build": {
         "command": ". .venv/bin/activate && python -m build"
