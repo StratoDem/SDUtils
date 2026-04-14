@@ -16,10 +16,10 @@
         "version": "3.9"
       },
       "dependency": {
-        "command": "python3.9 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+        "command": "python3.9 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install 'numpy>=1.19,<2.0' && pip install -r requirements.txt"
       },
       "build": {
-        "command": ". .venv/bin/activate && python -m build"
+        "command": ". .venv/bin/activate && pip install build && python -m build"
       },
       "tests": [
         {
