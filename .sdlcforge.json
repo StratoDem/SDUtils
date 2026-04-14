@@ -1,6 +1,7 @@
 {
   "_comment": "SDLC Forge configuration file for SDUtils",
   "schema_version": "1.0",
+  "arch": "amd64",
   "projects": [
     {
       "type": "python",
@@ -8,14 +9,14 @@
       "path": "",
       "runtime": {
         "name": "python",
-        "version": "3.13"
+        "version": "3.9"
       },
       "build_tool": {
         "name": "venv",
-        "version": "3.13"
+        "version": "3.9"
       },
       "dependency": {
-        "command": "python3.13 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
+        "command": "python3.9 -m venv .venv && . .venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt"
       },
       "build": {
         "command": ". .venv/bin/activate && python -m build"
